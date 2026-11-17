@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เลขวิน — เครื่องมือจัดชุดตัวเลข</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ---------- themes ---------- */
+  :root{
+    --red:#ef4d5a; --green:#2bb88a;
+    /* neutrals (light) */
+    --page:#f6f9fd; --card:#ffffff; --ink:#34406b; --muted:#7f8bb0; --num:#000; --inbg:#fff;
+    --glass:rgba(255,255,255,.72); --glassline:rgba(255,255,255,.9);
+    --soft:0 18px 40px -18px rgba(70,110,200,.35),0 4px 12px -6px rgba(70,110,200,.15);
+    /* accent: ฟ้า (default) */
+    --accent:#2386f5; --accent2:#45c4f0; --pill:#2fa8e6; --bg:#bde9f8;
+    --grad:linear-gradient(135deg,#45c4f0 0%,#4fd6c9 55%,#55dfa6 100%);
+    --blob:linear-gradient(160deg,#1877f6,#2f9cf7);
+    --chip:color-mix(in srgb,var(--accent2) 11%,var(--card));
+    --tint:color-mix(in srgb,var(--accent2) 14%,var(--card));
+    --line:color-mix(in srgb,var(--accent2) 30%,var(--card));
+    --panel:linear-gradient(180deg,color-mix(in srgb,var(--accent2) 14%,var(--page)) 0%,color-mix(in srgb,var(--accent2) 7%,var(--page)) 100%);
+  }
+  [data-theme="mint"]{--accent:#1f9a6b;--accent2:#3cc48f;--pill:#27ae7a;--bg:#c6efdc;
+    --grad:linear-gradient(135deg,#3cc48f 0%,#7fd7a8 55%,#c4e98f 100%);--blob:linear-gradient(160deg,#138a5c,#2fb07c)}
+  [data-theme="rose"]{--accent:#e0457b;--accent2:#f47aa3;--pill:#ec5b8e;--bg:#fbd7e4;
+    --grad:linear-gradient(135deg,#f47aa3 0%,#f9a3b8 55%,#ffc8a8 100%);--blob:linear-gradient(160deg,#d02f6a,#ef5f93)}
+  [data-theme="grape"]{--accent:#7c4ddb;--accent2:#a58bf0;--pill:#8b62e6;--bg:#e1d8fb;
+    --grad:linear-gradient(135deg,#a58bf0 0%,#b9a4f5 50%,#f0a8d8 100%);--blob:linear-gradient(160deg,#6534cf,#8f6bf0)}
+  [data-theme="sunset"]{--accent:#e8731c;--accent2:#f6a04d;--pill:#f08a2c;--bg:#fde2c6;
+    --grad:linear-gradient(135deg,#f6a04d 0%,#f8c36b 55%,#ffdf8a 100%);--blob:linear-gradient(160deg,#dd5f12,#f5872f)}
+  [data-mode="dark"]{
+    --page:#121a2b; --card:#1a2438; --ink:#e4eaf7; --muted:#93a0bd; --num:#f3f6fc; --inbg:#0e1524;
+    --glass:rgba(26,36,56,.82); --glassline:rgba(255,255,255,.08);
+    --soft:0 18px 40px -18px rgba(0,0,0,.6),0 4px 12px -6px rgba(0,0,0,.35);
+    --bg:#0a101c;
+  }
+  [data-mode="dark"] .hero{filter:saturate(.9) brightness(.82)}
+  [data-mode="dark"] .badge.no{background:rgba(43,184,138,.18);color:#5fe0b2}
+  [data-mode="dark"] .badge.yes{background:rgba(239,77,90,.2);color:#ff8a94}
+  [data-mode="dark"] .hero h1 span{background:rgba(255,255,255,.95)}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Prompt",system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh}
+  .wrap{position:relative;max-width:680px;margin:0 auto;padding:0 0 60px;background:var(--page);min-height:100vh;box-shadow:0 0 60px -20px color-mix(in srgb,var(--accent) 45%,transparent);transition:background .25s}
+  body{transition:background .25s}
+  @media (min-width:700px){ body{padding:16px 0} .wrap{border-radius:28px;overflow:hidden;min-height:auto} }
+  .inner{padding:0 18px}
+
+  /* ---------- hero with blobs ---------- */
+  .hero{position:relative;overflow:hidden;background:var(--grad);color:#fff;padding:18px 14px 56px;text-align:center;border-radius:0 0 28px 28px}
+  .hero::before{content:"";position:absolute;width:340px;height:340px;right:-120px;top:-170px;border-radius:50%;background:var(--blob)}
+  .hero::after{content:"";position:absolute;width:280px;height:280px;left:-140px;bottom:-170px;border-radius:50%;background:rgba(255,255,255,.14)}
+  .hero > *{position:relative;z-index:1}
+  .hero h1{margin:0;font:700 20px/1.15 "Prompt",sans-serif;letter-spacing:.01em}
+  .hero h1 span{display:inline-block;background:#fff;color:var(--accent);border-radius:12px;padding:0 12px;margin-left:6px;font-size:.8em;vertical-align:4px}
+  .hero p{margin:2px 0 0;font-size:12px;opacity:.95}
+
+  /* ---------- input (glass) ---------- */
+  .input-box{position:relative;z-index:2;margin:-36px 0 14px;padding:12px 12px 8px;text-align:center;border-radius:20px;
+    background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1.5px solid var(--glassline);box-shadow:var(--soft)}
+  .lbl{font:600 14px "Prompt",sans-serif;margin-bottom:6px}
+  .lbl em{font-style:normal;color:inherit}
+  .big-in{width:100%;max-width:220px;font:600 28px "Prompt",sans-serif;letter-spacing:.26em;text-indent:.26em;text-align:center;padding:6px 12px;
+    border:0;border-radius:14px;background:var(--inbg);color:var(--num);outline:none;box-shadow:inset 0 2px 6px rgba(52,64,107,.08),0 0 0 2px var(--line);transition:.15s}
+  .big-in:focus{box-shadow:inset 0 2px 6px rgba(52,64,107,.08),0 0 0 3px var(--accent2)}
+  .opts{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin:8px 0 2px}
+  .chk{position:relative;cursor:pointer;user-select:none}
+  .chk input{position:absolute;opacity:0;pointer-events:none}
+  .chk span{display:inline-flex;align-items:center;gap:6px;font:500 13px "Prompt",sans-serif;padding:3px 10px 3px 6px;border-radius:99px;background:var(--tint);color:var(--ink);transition:.15s}
+  .chk span::before{content:"";width:15px;height:15px;border-radius:5px;background:var(--inbg);box-shadow:inset 0 0 0 1.5px var(--line)}
+  .chk input:checked + span{background:color-mix(in srgb,var(--accent2) 24%,var(--card))}
+  .chk input:checked + span::before{content:"✓";display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;background:var(--accent);box-shadow:none}
+  .chk input:focus-visible + span{outline:2px solid var(--accent2);outline-offset:2px}
+  [hidden]{display:none!important}
+  .dup-warn{display:table;margin:10px auto 0;padding:6px 14px;border-radius:12px;background:var(--red);color:#fff;
+    font:600 15px/1.4 "Prompt",sans-serif;box-shadow:0 6px 16px -6px rgba(239,77,90,.7);animation:shake .4s ease}
+  .dup-warn b{display:inline-block;min-width:24px;margin-left:5px;padding:0 6px;border-radius:7px;background:#fff;color:var(--red);font-weight:700;text-align:center}
+  .big-in.has-dup{box-shadow:inset 0 2px 6px rgba(52,64,107,.08),0 0 0 3px var(--red)!important}
+  @keyframes shake{20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+  .reset{margin-top:4px;border:0;background:transparent;color:var(--muted);font:500 13px "Prompt",sans-serif;padding:2px 10px;cursor:pointer;border-radius:99px}
+  .reset:hover{color:var(--ink);background:var(--tint)}
+
+  .wait{text-align:center;color:var(--muted);font-size:13.5px;padding:6px 0 2px}
+  .wait b{color:var(--red)}
+  .wait .ico{font-size:20px;display:block}
+
+  /* ---------- cards ---------- */
+  .card{background:var(--card);border-radius:14px;padding:8px 12px;margin-bottom:8px;box-shadow:var(--soft);animation:in .3s ease both}
+  @keyframes pulse{50%{transform:scale(1.03)}}
+  @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .card-h{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;text-align:center}
+  .card-h h3{margin:0;font:600 18px "Prompt",sans-serif;display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;flex:none;min-width:0}
+  .badge{font:500 12.5px "Prompt",sans-serif;padding:1px 9px;border-radius:99px}
+  .badge.no{background:#dcf7ec;color:#1f9a70}
+  .badge.yes{background:#ffe5e8;color:var(--red)}
+  .count{font:500 12.5px "Prompt",sans-serif;color:var(--muted);text-align:center;margin-top:6px}
+  
+
+  .nums{font:600 14px/1.6 "Prompt",sans-serif;font-variant-numeric:tabular-nums;letter-spacing:.02em;color:#000;word-break:break-word}
+  .nums i{font-style:normal;color:#9aa6c4;margin:0 1px;font-weight:400}
+  .nums.sm{font-weight:500;word-spacing:3px}
+  .nums.tbl{white-space:nowrap;overflow-x:auto;font-size:13px;line-height:1.55}
+  .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:4px}
+  .chips .chip{width:42px}
+  .chip{font:500 13.5px/22px "Prompt",sans-serif;font-variant-numeric:tabular-nums;letter-spacing:.03em;color:var(--num);background:var(--chip);border-radius:6px;text-align:center}
+  .chips.sm .chip{width:40px}
+  .chips.sm .chip{font-size:13px}
+  .tbl{display:grid;grid-template-columns:repeat(10,1fr);gap:3px}
+  .tbl .chip{font-size:12px;line-height:20px;border-radius:5px}
+
+  .copy{display:flex;align-items:center;justify-content:center;gap:6px;flex:none;width:auto;min-width:88px;min-height:33px;padding:0 11px;margin:0;border:0;
+    background:var(--pill);color:#fff;font:600 14px "Prompt",sans-serif;letter-spacing:.02em;border-radius:99px;cursor:pointer;
+    box-shadow:0 8px 18px -10px color-mix(in srgb,var(--accent) 80%,transparent);touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:transform .08s,filter .15s,background .2s}
+  .copy .ic{font-size:15px;line-height:1}
+  .copy:hover{filter:brightness(1.05)}
+  .copy:active{transform:scale(.97)}
+  .copy.done{background:var(--grad);animation:pulse .35s ease}
+
+  /* ---------- reference ---------- */
+  .section-title{text-align:center;margin:14px 0 8px;font:600 16px "Prompt",sans-serif}
+  .section-title small{display:block;font:400 12px "Prompt",sans-serif;color:var(--muted)}
+  .ref-panel{margin-top:18px;padding:12px 10px 10px;border-radius:20px;background:var(--panel);
+    border:1.5px solid var(--line);box-shadow:inset 0 1px 0 var(--glassline)}
+  .ref-panel .section-title{margin:2px 0 10px;font-size:18px;font-weight:700}
+  .ref-panel .section-title::before,.ref-panel .section-title::after{content:"";display:inline-block;width:28px;height:2px;border-radius:2px;background:var(--line);vertical-align:middle;margin:0 10px}
+  .ref-panel .card{box-shadow:0 2px 8px -4px rgba(70,110,200,.25)}
+  .ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;grid-auto-flow:dense}
+  .ref-grid .card{margin:0;padding:8px 12px;border-radius:14px}
+  .ref-grid .card.wide{grid-column:1/-1}
+  .ref-grid .card-h h3{font-size:18px;font-weight:700}
+
+  .ref-grid .card-h{gap:8px}
+  .ref-grid .copy{min-height:31px;min-width:82px;font-size:13.5px;padding:0 10px}
+
+  .pip-btn{position:absolute;top:10px;right:10px;z-index:3;border:0;background:rgba(255,255,255,.95);color:var(--accent);
+    font:600 12px "Prompt",sans-serif;padding:4px 10px;border-radius:99px;cursor:pointer;box-shadow:0 6px 14px -6px rgba(0,40,120,.45)}
+  .pip-btn:hover{background:#fff}
+  .pip-note{background:#fff8e6;color:#7a5b00;border-radius:18px;padding:12px 14px;margin:-8px 0 18px;font-size:14px;text-align:left;box-shadow:var(--soft)}
+  .pip-note b{color:var(--red)}
+  /* inside the floating window */
+  body.in-pip{padding:0;background:var(--page)}
+  body.in-pip .wrap{border-radius:0;max-width:none;box-shadow:none;min-height:100vh}
+  body.in-pip .hero{padding:12px 12px 56px;border-radius:0 0 24px 24px}
+  body.in-pip .hero h1{font-size:19px}
+  body.in-pip .hero p{display:none}
+  body.in-pip .pip-btn{top:10px;right:10px;padding:5px 10px;font-size:12px}
+  body.in-pip .inner{padding:0 10px}
+  body.in-pip .ref-grid{grid-template-columns:1fr}
+  body.in-pip .big-in{font-size:26px}
+  body.in-pip .input-box{margin-top:-44px;padding:10px}
+  .pip-ctl{position:fixed;top:8px;right:8px;z-index:10;display:flex;gap:4px;padding:4px;border-radius:99px;background:var(--glass);box-shadow:0 4px 14px -4px rgba(0,40,120,.4);backdrop-filter:blur(8px)}
+  .pip-ctl button{width:32px;height:32px;border:0;border-radius:50%;background:var(--tint);color:var(--accent);font:700 17px "Prompt",sans-serif;
+    cursor:pointer;display:grid;place-items:center;padding:0}
+  .pip-ctl button:hover{filter:brightness(.95)}
+  .pip-ctl .zv{align-self:center;min-width:44px;text-align:center;font:600 12.5px "Prompt",sans-serif;color:var(--ink)}
+  .pip-ctl button[data-z="x"]{color:var(--red)}
+  body.in-pip .hero h1{text-align:left;padding:0 120px 0 72px}
+  body.in-pip .hero{text-align:left}
+  /* ---------- theme controls ---------- */
+  .tbar{position:absolute;top:10px;left:10px;z-index:6;display:flex;gap:6px}
+  .tbtn{width:30px;height:30px;border:0;border-radius:50%;background:rgba(255,255,255,.95);cursor:pointer;display:grid;place-items:center;
+    font-size:15px;line-height:1;box-shadow:0 6px 14px -6px rgba(0,40,120,.45);padding:0;transition:transform .1s}
+  .tbtn:active{transform:scale(.92)}
+  .tbtn svg{width:17px;height:17px;fill:none;stroke:var(--accent);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .tbtn svg .f{fill:var(--accent);stroke:none}
+  .tpop{position:absolute;top:44px;left:10px;z-index:7;display:flex;gap:8px;padding:8px 10px;border-radius:99px;background:var(--card);box-shadow:var(--soft);
+    border:1px solid var(--line);animation:in .2s ease both}
+  .sw{width:26px;height:26px;border-radius:50%;border:0;cursor:pointer;padding:0;box-shadow:inset 0 0 0 2px rgba(255,255,255,.7);transition:transform .1s}
+  .sw:hover{transform:scale(1.1)}
+  .sw.on{box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--ink)}
+  .sw[data-t="sky"]{background:linear-gradient(135deg,#45c4f0,#2386f5)}
+  .sw[data-t="mint"]{background:linear-gradient(135deg,#7fd7a8,#1f9a6b)}
+  .sw[data-t="rose"]{background:linear-gradient(135deg,#f9a3b8,#e0457b)}
+  .sw[data-t="grape"]{background:linear-gradient(135deg,#b9a4f5,#7c4ddb)}
+  .sw[data-t="sunset"]{background:linear-gradient(135deg,#ffd27a,#e8731c)}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:36px}
+  @media (max-width:520px){
+    .pip-btn{display:none}
+    .hero h1{font-size:22px}
+    .big-in{font-size:27px}
+    .ref-grid{grid-template-columns:1fr}
+    .tbl{gap:3px}
+    .tbl .chip{font-size:11px;border-radius:5px}
+    .chip{font-size:13px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="tbar">
+    <button class="tbtn" id="themeBtn" title="เลือกธีมสี" aria-label="เลือกธีมสี"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="8.5" cy="10" r="1.2" class="f"/><circle cx="12" cy="7.5" r="1.2" class="f"/><circle cx="15.5" cy="10" r="1.2" class="f"/><path d="M12 20.5c-1.5 0-2-1-2-2s1-1.8 2.2-1.8h1.6c2.6 0 4.7-1.6 4.7-4"/></svg></button>
+    <button class="tbtn" id="modeBtn" title="สลับโหมดมืด/สว่าง" aria-label="สลับโหมดมืด/สว่าง"></button>
+  </div>
+  <div class="tpop" id="themePop" hidden>
+    <button class="sw" data-t="sky" title="ฟ้า"></button>
+    <button class="sw" data-t="mint" title="เขียว"></button>
+    <button class="sw" data-t="rose" title="ชมพู"></button>
+    <button class="sw" data-t="grape" title="ม่วง"></button>
+    <button class="sw" data-t="sunset" title="ส้ม"></button>
+  </div>
+  <header class="hero">
+    <button class="pip-btn" id="pipBtn" title="เปิดเป็นหน้าต่างลอย อยู่หน้าสุดเสมอ">⧉ <span>หน้าต่างลอย</span></button>
+    <h1>วินเลข<span>เลขวิน</span></h1>
+    <p>พิมพ์เลขปุ๊บ ชุดเลขขึ้นปั๊บ · กดคัดลอกได้ทุกหมวด</p>
+  </header>
+
+  <div class="inner">
+  <div class="input-box">
+    <div class="lbl">ป้อนเลขที่ต้องการวิน <em>อย่างน้อย 3 ตัว</em></div>
+    <input class="big-in" id="win" type="tel" inputmode="numeric" maxlength="10" autofocus aria-label="เลขที่ต้องการวิน">
+    <div class="opts">
+      <label class="chk"><input type="checkbox" id="optNo"><span>ไม่รวมเบิ้ล</span></label>
+      <label class="chk"><input type="checkbox" id="optTrip"><span>ถ้าเบิ้ล ไม่รวมตอง</span></label>
+      <label class="chk"><input type="checkbox" id="optDup"><span>วินซ้ำได้</span></label>
+    </div>
+    <div class="dup-warn" id="dupWarn" role="alert" hidden></div>
+    <button class="reset" id="reset">↺ เริ่มใหม่</button>
+  </div>
+
+  <div class="pip-note" id="pipNote" hidden></div>
+
+  <div id="outWin"></div>
+
+  <section class="ref-panel">
+    <div class="section-title">ชุดตัวเลข</div>
+    <div class="ref-grid" id="outRef"></div>
+  </section>
+
+  </div>
+</div>
+
+<script>
+(() => {
+  const mainWrap = document.querySelector('.wrap');
+  const TEMPLATE = mainWrap.innerHTML;   // โครงหน้าเปล่า ใช้สร้างหน้าต่างลอย
+  const uniq = s => [...new Set(s.replace(/\D/g,'').split(''))];
+  const R = n => [...Array(n).keys()];
+
+  /* ---------- generator: หน้าไปหลัง ---------- */
+  function fwd(d, len, rep){
+    const out = [];
+    const rec = (start, pre) => {
+      if (pre.length === len){ out.push(pre); return; }
+      for (let i = start; i < d.length; i++) rec(rep ? i : i + 1, pre + d[i]);
+    };
+    rec(0, ''); return out;
+  }
+  const isTriple = s => s.length >= 3 && new Set(s).size === 1;
+
+  /* ---------- สูตรเสริม ---------- */
+  const ORDER = [1,2,3,4,5,6,7,8,9,0];
+  const others = d => ORDER.filter(x => x !== d);
+  const table = f => R(9).map(r => R(10).map(d => f(d, others(d)[r])));
+  const REF = [
+    { t:'พี่น้อง', c:'violet', v: R(10).map(d => `${d}${(d+1)%10}`) },
+    { t:'เลขเรียง 3 ตัว', c:'sky', v: R(10).map(d => `${d}${(d+1)%10}${(d+2)%10}`) },
+    { t:'เบิ้ลหน้า', c:'pink', rows: table((d,x) => `${d}${d}${x}`) },
+    { t:'เบิ้ลหลัง', c:'orange', rows: table((d,x) => `${x}${d}${d}`) },
+    { t:'หาม', c:'teal', rows: table((d,x) => `${d}${x}${d}`) },
+    { t:'สิบแต้ม', c:'amber', v: ['19','28','37','46','55'] },
+    { t:'เรียงพิเศษ', c:'indigo', v: ['016','086','245','459','579','015','235'] },
+    { t:'ตองพิเศษ', c:'rose', v: ['117','771','338','883','669','996','449','994'] },
+    { t:'ตองร้อย', c:'lime', v: R(9).map(d => `${d+1}00`) },
+    { t:'ตองเทพ', c:'violet', rows: [['013','014','017','033','034','037'],['044','047','077','113','114','117'],['133','134','137','144','147','177'],['334','337','344','347','377','447','477']], flow:true },
+    { t:'พี่น้องปลอม', c:'emerald', v: ['06','86','59','79'] },
+    { t:'เลขชู้', c:'pink', v: R(10).map(d => `${d}${(d+3)%10}`) },
+    { t:'เลขผัวเมีย', c:'rose', v: R(10).map(d => `${d}${(d+2)%10}`) },
+  ];
+
+  /* ---------- render helpers ---------- */
+  const chips = (arr, cls='') => `<div class="chips ${cls}">${arr.map(x => `<span class="chip">${x}</span>`).join('')}</div>`;
+
+  const LABEL = '<span class="ic">⧉</span> คัดลอก';
+  const copyBtn = text => `<button class="copy" data-copy="${encodeURIComponent(text)}">${LABEL}</button>`;
+
+  function mainCard({ len, dbl, items, color }){
+    const text = items.join('-');
+    return `<div class="card t-${color}">
+      <div class="card-h">
+        <h3>เลข ${len} ตัว <span class="badge ${dbl ? 'yes' : 'no'}">${dbl ? 'รวมเบิ้ล' : 'ไม่รวมเบิ้ล'}</span></h3>
+        ${copyBtn(text)}
+      </div>
+      ${chips(items)}
+      <div class="count">(รวม ${items.length} ชุด)</div>
+    </div>`;
+  }
+
+  function refCard(r){
+    const wide = r.rows && !r.flow;
+    const text = r.rows ? r.rows.map(x => x.join(' ')).join('\n') : r.v.join(' ');
+    const body = r.rows
+      ? (r.flow ? chips(r.rows.flat(), 'sm') : `<div class="tbl">${r.rows.flat().map(x => `<span class="chip">${x}</span>`).join('')}</div>`)
+      : chips(r.v, 'sm');
+    return `<div class="card t-${r.c}${wide || r.wide ? ' wide' : ''}">
+      <div class="card-h"><h3>${r.t}</h3>${copyBtn(text)}</div>
+      ${body}
+    </div>`;
+  }
+
+  /* ---------- ธีมสี + มืด/สว่าง ---------- */
+  const store = { get(k){ try { return localStorage.getItem(k); } catch { return null; } }, set(k,v){ try { localStorage.setItem(k,v); } catch {} } };
+  const prefersDark = (() => { try { return matchMedia('(prefers-color-scheme: dark)').matches; } catch { return false; } })();
+  const theme = { t: store.get('winlek-theme') || 'sky', m: store.get('winlek-mode') || (prefersDark ? 'dark' : 'light') };
+  const docs = new Set([document]);
+  const instances = new Set();
+  function applyTheme(){
+    docs.forEach(d => { d.documentElement.dataset.theme = theme.t; d.documentElement.dataset.mode = theme.m; });
+    instances.forEach(fn => fn());
+    store.set('winlek-theme', theme.t); store.set('winlek-mode', theme.m);
+  }
+
+  /* ---------- app instance (ใช้ได้ทั้งหน้าหลักและหน้าต่างลอย) ---------- */
+  function initApp(wrap, win, inPip){
+    const $ = s => wrap.querySelector(s);
+
+    function renderWin(){
+      const raw = $('#win').value, box = $('#outWin'), warn = $('#dupWarn');
+      const allowDup = $('#optDup').checked;
+      const all = raw.replace(/\D/g,'').split('').filter(Boolean);
+      const dups = [...new Set(all.filter((c, i) => all.indexOf(c) !== i))];
+      if (dups.length && !allowDup){
+        warn.innerHTML = `⚠️ มีเลขซ้ำ ${dups.map(x => `<b>${x}</b>`).join('')}`;
+        $('#win').classList.add('has-dup');
+        warn.hidden = false;
+      } else { warn.hidden = true; $('#win').classList.remove('has-dup'); }
+      const d = allowDup ? all : uniq(raw);
+      if (d.length < 3){
+        box.innerHTML = `<div class="wait"><span class="ico">${raw ? '✍️' : '🎯'}</span>${raw
+          ? `ต้องมีเลข${allowDup ? '' : 'ไม่ซ้ำ'} <b>อย่างน้อย 3 ตัว</b> (ตอนนี้ ${d.length} ตัว)`
+          : 'พิมพ์เลขด้านบน ผลลัพธ์จะขึ้นทันที'}</div>`;
+        return;
+      }
+      const onlyNo = $('#optNo').checked, noTrip = $('#optTrip').checked;
+      const gen = (len, rep) => [...new Set(fwd(d, len, rep))];
+      const strip = a => noTrip ? a.filter(s => !isTriple(s)) : a;
+      let h = '';
+      h += mainCard({ len:2, dbl:false, items: gen(2,false), color:'emerald' });
+      h += mainCard({ len:3, dbl:false, items: gen(3,false), color:'sky' });
+      if (!onlyNo){
+        h += mainCard({ len:2, dbl:true, items: gen(2,true), color:'orange' });
+        h += mainCard({ len:3, dbl:true, items: strip(gen(3,true)), color:'rose' });
+      }
+      box.innerHTML = h;
+    }
+
+    $('#win').addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g,''); renderWin(); });
+    ['#optNo','#optTrip','#optDup'].forEach(s => $(s).addEventListener('change', renderWin));
+    $('#reset').addEventListener('click', () => { $('#win').value = ''; $('#win').focus(); renderWin(); });
+
+    wrap.addEventListener('click', async e => {
+      const b = e.target.closest('.copy'); if (!b) return;
+      try { await win.navigator.clipboard.writeText(decodeURIComponent(b.dataset.copy)); b.innerHTML = '<span class="ic">✓</span> คัดลอกแล้ว'; b.classList.add('done'); }
+      catch { b.innerHTML = 'คัดลอกไม่ได้'; }
+      setTimeout(() => { b.innerHTML = LABEL; b.classList.remove('done'); }, 1400);
+    });
+
+    $('#outRef').innerHTML = REF.map(refCard).join('');
+    renderWin();
+
+    // ปุ่มธีม
+    const pop = $('#themePop');
+    const syncUI = () => {
+      $('#modeBtn').innerHTML = theme.m === 'dark' ? '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>' : '<svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>';
+      pop.querySelectorAll('.sw').forEach(b => b.classList.toggle('on', b.dataset.t === theme.t));
+    };
+    instances.add(syncUI); syncUI();
+    $('#themeBtn').addEventListener('click', e => { e.stopPropagation(); pop.hidden = !pop.hidden; });
+    $('#modeBtn').addEventListener('click', () => { theme.m = theme.m === 'dark' ? 'light' : 'dark'; applyTheme(); });
+    pop.addEventListener('click', e => { const b = e.target.closest('.sw'); if (!b) return; theme.t = b.dataset.t; applyTheme(); });
+    win.document.addEventListener('click', e => { if (!pop.hidden && !pop.contains(e.target) && e.target.id !== 'themeBtn') pop.hidden = true; });
+
+    if (inPip){
+      // ปุ่มย่อ/ขยายหน้าต่างลอย + ปิด
+      $('#pipBtn').remove();
+      const ctl = win.document.createElement('div');
+      ctl.className = 'pip-ctl';
+      ctl.innerHTML = `<button data-z="-1" title="ซูมออก">－</button><span class="zv">100%</span><button data-z="1" title="ซูมเข้า">＋</button><button data-z="x" title="ปิดหน้าต่างลอย">✕</button>`;
+      win.document.body.appendChild(ctl);
+      let zoom = 1;
+      ctl.addEventListener('click', e => {
+        const k = e.target.closest('button')?.dataset.z; if (!k) return;
+        if (k === 'x'){ win.close(); return; }
+        zoom = Math.round(Math.min(1.6, Math.max(.6, zoom + (+k) * .1)) * 10) / 10;
+        wrap.style.zoom = zoom;
+        ctl.querySelector('.zv').textContent = Math.round(zoom * 100) + '%';
+      });
+    } else {
+      $('#pipBtn').addEventListener('click', openPip);
+    }
+    return { focus: () => $('#win').focus() };
+  }
+
+  /* ---------- หน้าต่างลอย (Document Picture-in-Picture) ---------- */
+  let pipWin = null;
+  const note = mainWrap.querySelector('#pipNote');
+  const showNote = html => { note.innerHTML = html; note.hidden = false; };
+
+  async function openPip(){
+    if (pipWin && !pipWin.closed){ pipWin.focus(); return; }
+    if (!('documentPictureInPicture' in window)){
+      showNote('เบราว์เซอร์นี้ยังไม่รองรับหน้าต่างลอย ใช้ได้กับ <b>Chrome หรือ Edge บนคอมพิวเตอร์</b> (เวอร์ชัน 116 ขึ้นไป) — บนมือถือยังไม่รองรับ');
+      return;
+    }
+    try {
+      pipWin = await window.documentPictureInPicture.requestWindow({ width: 380, height: 640 });
+    } catch (err) {
+      showNote('เปิดหน้าต่างลอยไม่ได้ในหน้านี้ — ต้องเปิดเว็บเป็นหน้าเต็มของตัวเอง (ไม่ใช่หน้าที่ฝังอยู่ในหน้าอื่น) บน <b>Chrome หรือ Edge บนคอมพิวเตอร์</b>');
+      return;
+    }
+    note.hidden = true;
+    document.querySelectorAll('link[rel="stylesheet"], style').forEach(n => pipWin.document.head.appendChild(n.cloneNode(true)));
+    pipWin.document.title = document.title;
+    pipWin.document.body.classList.add('in-pip');
+    const w = pipWin.document.createElement('div');
+    w.className = 'wrap';
+    w.innerHTML = TEMPLATE;
+    pipWin.document.body.appendChild(w);
+    docs.add(pipWin.document); applyTheme();
+    initApp(w, pipWin, true).focus();
+    const pd = pipWin.document;
+    pipWin.addEventListener('pagehide', () => { docs.delete(pd); pipWin = null; });
+  }
+
+  applyTheme();
+  initApp(mainWrap, window, false);
+})();
+</script>
+</body>
+</html>
