@@ -50,7 +50,7 @@
   .inner{padding:0 18px}
 
   /* ---------- hero with blobs ---------- */
-  .hero{position:relative;overflow:hidden;background:var(--grad);color:#fff;padding:18px 14px 56px;text-align:center;border-radius:0 0 28px 28px}
+  .hero{position:relative;overflow:hidden;background:var(--grad);color:#fff;padding:18px 14px 64px;text-align:center;border-radius:0 0 28px 28px}
   .hero::before{content:"";position:absolute;width:340px;height:340px;right:-120px;top:-170px;border-radius:50%;background:var(--blob)}
   .hero::after{content:"";position:absolute;width:280px;height:280px;left:-140px;bottom:-170px;border-radius:50%;background:rgba(255,255,255,.14)}
   .hero > *{position:relative;z-index:1}
@@ -159,6 +159,67 @@
   .pip-ctl button[data-z="x"]{color:var(--red)}
   body.in-pip .hero h1{text-align:left;padding:0 120px 0 72px}
   body.in-pip .hero{text-align:left}
+
+  /* ---------- login ---------- */
+  .login{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:20px;background:var(--grad)}
+  .login::before{content:"";position:absolute;width:420px;height:420px;right:-140px;top:-160px;border-radius:50%;background:var(--blob);opacity:.9}
+  body.locked .wrap{display:none}
+  .login-card{position:relative;width:100%;max-width:340px;padding:26px 22px 22px;border-radius:24px;background:var(--glass);
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1.5px solid var(--glassline);box-shadow:var(--soft);text-align:center}
+  .login-logo{display:inline-block;font:700 15px "Prompt",sans-serif;color:var(--accent);background:var(--card);border-radius:10px;padding:2px 12px;margin-bottom:6px}
+  .login-card h2{margin:0 0 16px;font:700 22px "Prompt",sans-serif;color:var(--ink)}
+  .login-card label{display:block;text-align:left;font:500 13px "Prompt",sans-serif;color:var(--muted);margin-bottom:12px}
+  .login-card input:not([type=checkbox]){display:block;width:100%;margin-top:4px;padding:10px 12px;border:0;border-radius:12px;background:var(--inbg);color:var(--num);
+    font:500 16px "Prompt",sans-serif;outline:none;box-shadow:0 0 0 2px var(--line)}
+  .login-card input:focus{box-shadow:0 0 0 3px var(--accent2)}
+  .pw{position:relative;display:block}
+  .pw input{padding-right:62px!important}
+  .eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);margin-top:2px;border:0;background:var(--tint);color:var(--accent);font:600 12px "Prompt",sans-serif;padding:4px 9px;border-radius:8px;cursor:pointer}
+  .login-card .remember{display:flex;align-items:center;gap:6px;color:var(--ink)}
+  .remember input{accent-color:var(--accent);width:15px;height:15px}
+  .login-err{margin:-2px 0 10px;padding:6px 10px;border-radius:10px;background:var(--red);color:#fff;font:600 13px "Prompt",sans-serif;animation:shake .4s ease}
+  .login-btn{width:100%;min-height:44px;border:0;border-radius:99px;background:var(--pill);color:#fff;font:600 16px "Prompt",sans-serif;cursor:pointer;
+    box-shadow:0 8px 18px -10px color-mix(in srgb,var(--accent) 80%,transparent)}
+  .login-btn:active{transform:scale(.98)}
+  .hbar{position:absolute;top:10px;right:10px;z-index:3;display:flex;gap:6px}
+  .hb{border:0;background:rgba(255,255,255,.95);color:var(--accent);font:600 12px "Prompt",sans-serif;padding:4px 10px;border-radius:99px;cursor:pointer;box-shadow:0 6px 14px -6px rgba(0,40,120,.45);white-space:nowrap}
+  .hb:hover{background:#fff}
+  .hbar .pip-btn{position:static;box-shadow:0 6px 14px -6px rgba(0,40,120,.45)}
+  .who{font:500 11.5px "Prompt",sans-serif;opacity:.95;margin-top:4px}
+  .who b{background:rgba(255,255,255,.25);padding:0 7px;border-radius:99px;font-weight:600}
+  body.in-pip .hbar{display:none}
+  .hero{padding-top:50px!important}
+  body.in-pip .hero{padding-top:14px!important}
+
+  /* ---------- permission modal ---------- */
+  .modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:16px;background:rgba(10,20,40,.45);backdrop-filter:blur(4px)}
+  .modal-card{width:100%;max-width:520px;max-height:90vh;overflow-y:auto;overflow-x:hidden;background:var(--card);color:var(--ink);border-radius:22px;padding:16px 16px 14px;box-shadow:var(--soft);animation:in .2s ease both}
+  .modal-h{display:flex;align-items:center;justify-content:space-between}
+  .modal-h h2{margin:0;font:700 19px "Prompt",sans-serif}
+  .x{border:0;background:var(--tint);color:var(--ink);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px}
+  .hint{font-size:12.5px;color:var(--muted);margin:4px 0 12px}
+  .hint b{color:var(--ink)}
+  .ulist{display:flex;flex-direction:column;gap:6px}
+  .urow{display:grid;grid-template-columns:1fr auto auto auto;gap:6px;align-items:center;padding:8px 10px;border-radius:12px;background:var(--chip)}
+  .urow .nm{font:600 14px "Prompt",sans-serif;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .urow .nm small{display:block;font:400 11px "Prompt",sans-serif;color:var(--muted)}
+  .uadd input{min-width:0;width:100%}
+  .urow select,.uadd select,.uadd input{font:500 13px "Prompt",sans-serif;padding:6px 8px;border-radius:9px;border:0;background:var(--inbg);color:var(--ink);box-shadow:0 0 0 1.5px var(--line);outline:none}
+  .uadd input:focus,.uadd select:focus,.urow select:focus{box-shadow:0 0 0 2px var(--accent2)}
+  .sbtn{border:0;background:var(--inbg);color:var(--ink);font:600 12px "Prompt",sans-serif;padding:6px 9px;border-radius:9px;cursor:pointer;box-shadow:0 0 0 1.5px var(--line)}
+  .sbtn.del{color:var(--red)}
+  .sbtn:disabled{opacity:.4;cursor:not-allowed}
+  .uadd{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto auto;gap:6px;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+  .uadd-t{grid-column:1/-1;font:600 14px "Prompt",sans-serif}
+  .pbtn{border:0;background:var(--pill);color:#fff;font:600 13px "Prompt",sans-serif;padding:7px 12px;border-radius:99px;cursor:pointer;white-space:nowrap}
+  .pbtn.ghost{background:var(--tint);color:var(--accent)}
+  .pbtn.danger{color:var(--red)}
+  .perm-msg{margin-top:10px;padding:6px 10px;border-radius:10px;font:500 13px "Prompt",sans-serif;background:var(--tint)}
+  .perm-msg.err{background:var(--red);color:#fff}
+  .sync{margin-top:14px;padding:10px 12px;border-radius:14px;background:color-mix(in srgb,#f5b400 14%,var(--card));font-size:12.5px;line-height:1.5}
+  .sync.ok{background:var(--chip)}
+  .sync-b{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  @media (max-width:520px){ .uadd{grid-template-columns:minmax(0,1fr) minmax(0,1fr)} .urow{grid-template-columns:1fr auto auto} .urow .chg{display:none} }
   /* ---------- theme controls ---------- */
   .tbar{position:absolute;top:10px;left:10px;z-index:6;display:flex;gap:6px}
   .tbtn{width:30px;height:30px;border:0;border-radius:50%;background:rgba(255,255,255,.95);cursor:pointer;display:grid;place-items:center;
@@ -188,7 +249,43 @@
   }
 </style>
 </head>
-<body>
+<body class="locked">
+<div class="login" id="login">
+  <form class="login-card" id="loginForm" autocomplete="on">
+    <div class="login-logo">วินเลข</div>
+    <h2>เข้าสู่ระบบ</h2>
+    <label>รหัสเข้าใช้งาน
+      <span class="pw"><input id="lgPass" name="password" type="password" autocomplete="current-password" required autofocus>
+      <button type="button" class="eye" id="lgEye" aria-label="แสดงรหัสผ่าน">แสดง</button></span>
+    </label>
+    <label class="remember"><input type="checkbox" id="lgRemember" checked> จำการเข้าสู่ระบบไว้</label>
+    <div class="login-err" id="lgErr" hidden>รหัสไม่ถูกต้อง</div>
+    <button type="submit" class="login-btn">เข้าสู่ระบบ</button>
+  </form>
+</div>
+<div class="modal" id="permModal" hidden>
+  <div class="modal-card" role="dialog" aria-labelledby="permTitle">
+    <div class="modal-h"><h2 id="permTitle">ตั้งค่าสิทธิ์</h2><button class="x" id="permClose" type="button" aria-label="ปิด">✕</button></div>
+    <p class="hint">สิทธิ์ <b>ใช้งาน</b> = ใช้เครื่องมือวินเลขได้ · สิทธิ์ <b>ดูแล</b> = ใช้งานได้ + เพิ่ม ลบ เปลี่ยนสิทธิ์ผู้อื่น</p>
+    <div class="ulist" id="uList"></div>
+    <form class="uadd" id="uAdd" autocomplete="off">
+      <div class="uadd-t">เพิ่มผู้ใช้</div>
+      <input id="nName" placeholder="ชื่อเรียก เช่น พี่เอ" required maxlength="40">
+      <input id="nCode" placeholder="รหัสเข้าใช้งาน (อย่างน้อย 4 ตัว)" required minlength="4">
+      <select id="nRole"><option value="user">ใช้งาน</option><option value="admin">ดูแล</option></select>
+      <button type="submit" class="pbtn">+ เพิ่ม</button>
+    </form>
+    <div class="perm-msg" id="permMsg" hidden></div>
+    <div class="sync">
+      <div class="sync-t" id="syncT"></div>
+      <div class="sync-b">
+        <button type="button" class="pbtn ghost" id="copyJson">คัดลอก users.json</button>
+        <button type="button" class="pbtn ghost" id="dlJson">ดาวน์โหลด users.json</button>
+        <button type="button" class="pbtn ghost danger" id="resetLocal" hidden>ยกเลิกการแก้บนเครื่องนี้</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="wrap">
   <div class="tbar">
     <button class="tbtn" id="themeBtn" title="เลือกธีมสี" aria-label="เลือกธีมสี"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="8.5" cy="10" r="1.2" class="f"/><circle cx="12" cy="7.5" r="1.2" class="f"/><circle cx="15.5" cy="10" r="1.2" class="f"/><path d="M12 20.5c-1.5 0-2-1-2-2s1-1.8 2.2-1.8h1.6c2.6 0 4.7-1.6 4.7-4"/></svg></button>
@@ -202,9 +299,14 @@
     <button class="sw" data-t="sunset" title="ส้ม"></button>
   </div>
   <header class="hero">
-    <button class="pip-btn" id="pipBtn" title="เปิดเป็นหน้าต่างลอย อยู่หน้าสุดเสมอ">⧉ <span>หน้าต่างลอย</span></button>
+    <div class="hbar">
+      <button class="hb" id="permBtn" type="button" hidden>ตั้งค่าสิทธิ์</button>
+      <button class="hb" id="logoutBtn" type="button">ออกจากระบบ</button>
+      <button class="hb pip-btn" id="pipBtn" title="เปิดเป็นหน้าต่างลอย อยู่หน้าสุดเสมอ">⧉ <span>หน้าต่างลอย</span></button>
+    </div>
     <h1>วินเลข<span>เลขวิน</span></h1>
     <p>พิมพ์เลขปุ๊บ ชุดเลขขึ้นปั๊บ · กดคัดลอกได้ทุกหมวด</p>
+    <div class="who" id="whoLine"></div>
   </header>
 
   <div class="inner">
@@ -426,6 +528,186 @@
 
   applyTheme();
   initApp(mainWrap, window, false);
+
+  /* ---------- login + สิทธิ์ (เก็บรายชื่อใน users.json บน GitHub) ---------- */
+  // รหัสเก็บเป็นค่า SHA-256 ไม่เก็บตัวรหัสจริง
+  // ถ้าโหลด users.json ไม่ได้ (เช่นเปิดไฟล์ในเครื่อง) จะใช้รายชื่อเริ่มต้นนี้
+  const DEFAULT_USERS = [{"name": "seattee1", "role": "admin", "hash": "ca70cbffb842c88dc4c9bf2fb3be7bc19138f4087c2d5908c1df9500ee0c782a"}, {"name": "seattee2", "role": "user", "hash": "b36b2218c3ee421449096baab9f7275ca82690fe9cd58a6e20cd186bbdd2347e"}, {"name": "seattee3", "role": "user", "hash": "56c2412a5d3051197df969d89ba7c72f1f5ddd3cbc4ecfb27d9253dc63bf0e37"}, {"name": "seattee4", "role": "user", "hash": "ba90f123b8b5b9b55fa17b3458cf1d18ebccaefd07376c9c185d19fc6cf346e7"}, {"name": "seattee5", "role": "user", "hash": "c8e6dd618c7ae3553441df639b653ea3f31be1fac1e9c6fe90e8f17d0e551459"}, {"name": "seattee6", "role": "user", "hash": "f4ff8fccbd0309b51e4942385d653bf1cea8e09bf763142ae454ac23bfcd5054"}, {"name": "seattee7", "role": "user", "hash": "e287b07965c96ffabb40dbb3193543a95781a8b6407e069aa1a515deb1e39df0"}, {"name": "seattee8", "role": "user", "hash": "2778cd4dd302c72207a1053e40b9426958546a34974df5f94e9d3a8dc860a1e6"}, {"name": "seattee9", "role": "user", "hash": "82f633d99ee267953234b413d86620fbf6664dc7b3137f711498771e6826a905"}, {"name": "seattee10", "role": "user", "hash": "874680b18e036732ea1ec42b405bd24fc30fae45d5e5b1fff50f5ac2a5455b03"}];
+  const AUTH_KEY = 'winlek-auth', LOCAL_USERS = 'winlek-users-local';
+  const ROLE_TH = { admin: 'ดูแล', user: 'ใช้งาน' };
+  function sha256hex(str){
+    const msg = new TextEncoder().encode(str);
+    const K = [0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+    const H = [0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+    const l = msg.length, nb = ((l + 9 + 63) >> 6) << 6, b = new Uint8Array(nb);
+    b.set(msg); b[l] = 0x80; const dv = new DataView(b.buffer); dv.setUint32(nb - 4, l * 8); dv.setUint32(nb - 8, Math.floor(l / 0x20000000));
+    const W = new Uint32Array(64), r = (x, n) => (x >>> n) | (x << (32 - n));
+    for (let o = 0; o < nb; o += 64){
+      for (let i = 0; i < 16; i++) W[i] = dv.getUint32(o + i * 4);
+      for (let i = 16; i < 64; i++){ const s0 = r(W[i-15],7)^r(W[i-15],18)^(W[i-15]>>>3), s1 = r(W[i-2],17)^r(W[i-2],19)^(W[i-2]>>>10); W[i] = (W[i-16]+s0+W[i-7]+s1)|0; }
+      let [a,bb,c,d,e,f,g,h] = H;
+      for (let i = 0; i < 64; i++){
+        const t1 = (h + (r(e,6)^r(e,11)^r(e,25)) + ((e&f)^(~e&g)) + K[i] + W[i])|0;
+        const t2 = ((r(a,2)^r(a,13)^r(a,22)) + ((a&bb)^(a&c)^(bb&c)))|0;
+        h=g; g=f; f=e; e=(d+t1)|0; d=c; c=bb; bb=a; a=(t1+t2)|0;
+      }
+      H[0]=(H[0]+a)|0; H[1]=(H[1]+bb)|0; H[2]=(H[2]+c)|0; H[3]=(H[3]+d)|0; H[4]=(H[4]+e)|0; H[5]=(H[5]+f)|0; H[6]=(H[6]+g)|0; H[7]=(H[7]+h)|0;
+    }
+    return H.map(x => (x >>> 0).toString(16).padStart(8, '0')).join('');
+  }
+  const sget = (st, k) => { try { return st.getItem(k); } catch { return null; } };
+  const sset = (st, k, v) => { try { v == null ? st.removeItem(k) : st.setItem(k, v); } catch {} };
+  const loginEl = document.getElementById('login');
+  const permModal = document.getElementById('permModal');
+  const $m = sel => permModal.querySelector(sel);
+  let baseUsers = DEFAULT_USERS, users = DEFAULT_USERS, me = null, hasLocal = false;
+  const clone = a => JSON.parse(JSON.stringify(a));
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  async function loadUsers(){
+    try {
+      const r = await fetch('users.json', { cache: 'no-store' });
+      if (r.ok){ const j = await r.json(); if (Array.isArray(j.users) && j.users.length) baseUsers = j.users; }
+    } catch {}
+    const loc = sget(localStorage, LOCAL_USERS);
+    if (loc){ try { users = JSON.parse(loc); hasLocal = true; } catch { users = clone(baseUsers); } }
+    else users = clone(baseUsers);
+  }
+  function saveLocal(){
+    sset(localStorage, LOCAL_USERS, JSON.stringify(users)); hasLocal = true;
+    // จำ session ของตัวเองไว้ถ้ารหัสตัวเองถูกเปลี่ยน
+    renderPerm();
+  }
+  const findByHash = h => users.find(u => u.hash === h);
+
+  function unlock(u){
+    me = u; document.body.classList.remove('locked'); loginEl.hidden = true;
+    mainWrap.querySelector('#permBtn').hidden = u.role !== 'admin';
+    mainWrap.querySelector('#whoLine').innerHTML = `เข้าสู่ระบบ: <b>${esc(u.name)} · ${ROLE_TH[u.role]}</b>`;
+    setTimeout(() => mainWrap.querySelector('#win')?.focus(), 30);
+  }
+  function lock(){
+    me = null; permModal.hidden = true;
+    document.body.classList.add('locked'); loginEl.hidden = false;
+    document.getElementById('lgPass').value = ''; document.getElementById('lgPass').focus();
+  }
+  function logout(){
+    sset(localStorage, AUTH_KEY, null); sset(sessionStorage, AUTH_KEY, null);
+    if (pipWin && !pipWin.closed) pipWin.close();
+    lock();
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const h = sha256hex(document.getElementById('lgPass').value);
+    const u = findByHash(h), err = document.getElementById('lgErr');
+    if (!u){ err.hidden = true; void err.offsetWidth; err.hidden = false; document.getElementById('lgPass').select(); return; }
+    err.hidden = true;
+    sset(document.getElementById('lgRemember').checked ? localStorage : sessionStorage, AUTH_KEY, h);
+    unlock(u);
+  });
+  document.getElementById('lgEye').addEventListener('click', e => {
+    const i = document.getElementById('lgPass'), show = i.type === 'password';
+    i.type = show ? 'text' : 'password'; e.target.textContent = show ? 'ซ่อน' : 'แสดง';
+  });
+  mainWrap.querySelector('#logoutBtn').addEventListener('click', logout);
+
+  /* ----- หน้าตั้งค่าสิทธิ์ (เฉพาะสิทธิ์ดูแล) ----- */
+  const admins = () => users.filter(u => u.role === 'admin').length;
+  function msg(t, bad){ const m = $m('#permMsg'); m.textContent = t; m.className = 'perm-msg' + (bad ? ' err' : ''); m.hidden = false; clearTimeout(msg.t); msg.t = setTimeout(() => m.hidden = true, 3500); }
+  const usersJson = () => JSON.stringify({ users }, null, 2) + '\n';
+  function renderPerm(){
+    $m('#uList').innerHTML = users.map((u, i) => {
+      const isMe = me && u.hash === me.hash;
+      const lastAdmin = u.role === 'admin' && admins() === 1;
+      return `<div class="urow" data-i="${i}">
+        <div class="nm">${esc(u.name)}${isMe ? ' (คุณ)' : ''}<small>สิทธิ์${ROLE_TH[u.role]}</small></div>
+        <select class="role" ${lastAdmin ? 'disabled title="ต้องมีผู้ดูแลอย่างน้อย 1 คน"' : ''}>
+          <option value="user"${u.role === 'user' ? ' selected' : ''}>ใช้งาน</option>
+          <option value="admin"${u.role === 'admin' ? ' selected' : ''}>ดูแล</option>
+        </select>
+        <button type="button" class="sbtn chg">เปลี่ยนรหัส</button>
+        <button type="button" class="sbtn del" ${lastAdmin || isMe ? 'disabled' : ''} title="${isMe ? 'ลบตัวเองไม่ได้' : lastAdmin ? 'ต้องมีผู้ดูแลอย่างน้อย 1 คน' : 'ลบ'}">ลบ</button>
+      </div>`;
+    }).join('');
+    const changed = JSON.stringify(users) !== JSON.stringify(baseUsers);
+    const sync = $m('.sync');
+    sync.classList.toggle('ok', !changed);
+    $m('#syncT').innerHTML = changed
+      ? '<b>⚠️ ยังมีผลเฉพาะเครื่องนี้</b> — กด “คัดลอก” หรือ “ดาวน์โหลด” users.json แล้วอัปโหลดทับไฟล์เดิมในรีโป GitHub เพื่อให้มีผลทุกเครื่อง'
+      : '✓ รายชื่อตรงกับไฟล์ users.json บนเว็บแล้ว';
+    $m('#resetLocal').hidden = !hasLocal;
+  }
+  mainWrap.querySelector('#permBtn').addEventListener('click', () => { if (me?.role !== 'admin') return; renderPerm(); permModal.hidden = false; });
+  $m('#permClose').addEventListener('click', () => permModal.hidden = true);
+  permModal.addEventListener('click', e => { if (e.target === permModal) permModal.hidden = true; });
+
+  $m('#uList').addEventListener('change', e => {
+    if (!e.target.classList.contains('role')) return;
+    const i = +e.target.closest('.urow').dataset.i, u = users[i], nr = e.target.value;
+    if (u.role === 'admin' && nr !== 'admin' && admins() === 1){ e.target.value = 'admin'; return msg('ต้องมีผู้ดูแลอย่างน้อย 1 คน', true); }
+    u.role = nr; saveLocal(); msg(`เปลี่ยนสิทธิ์ ${u.name} เป็น “${ROLE_TH[nr]}” แล้ว`);
+    if (me && u.hash === me.hash){ me.role = nr; unlock(u); if (nr !== 'admin') permModal.hidden = true; }
+  });
+  $m('#uList').addEventListener('click', e => {
+    const row = e.target.closest('.urow'); if (!row) return;
+    const i = +row.dataset.i, u = users[i];
+    if (e.target.classList.contains('del')){
+      if (e.target.dataset.confirm !== '1'){ e.target.dataset.confirm = '1'; e.target.textContent = 'ยืนยันลบ?'; setTimeout(() => { if (e.target.isConnected){ e.target.dataset.confirm = ''; e.target.textContent = 'ลบ'; } }, 3000); return; }
+      users.splice(i, 1); saveLocal(); msg(`ลบ ${u.name} แล้ว`);
+    }
+    if (e.target.classList.contains('chg')){
+      const box = document.createElement('div');
+      box.className = 'uadd'; box.style.marginTop = '4px'; box.style.paddingTop = '0'; box.style.borderTop = '0';
+      box.innerHTML = `<input class="nc" placeholder="รหัสใหม่ของ ${esc(u.name)}" minlength="4"><button type="button" class="pbtn okc">บันทึก</button>`;
+      row.after(box); box.querySelector('.nc').focus();
+      box.querySelector('.okc').addEventListener('click', () => {
+        const v = box.querySelector('.nc').value;
+        if (v.length < 4) return msg('รหัสต้องมีอย่างน้อย 4 ตัว', true);
+        const h = sha256hex(v);
+        if (users.some(x => x.hash === h && x !== u)) return msg('รหัสนี้มีคนใช้แล้ว', true);
+        const wasMe = me && u.hash === me.hash;
+        u.hash = h; saveLocal(); msg(`เปลี่ยนรหัสของ ${u.name} แล้ว`);
+        if (wasMe){ me = u; if (sget(localStorage, AUTH_KEY)) sset(localStorage, AUTH_KEY, h); else sset(sessionStorage, AUTH_KEY, h); }
+      });
+    }
+  });
+  $m('#uAdd').addEventListener('submit', e => {
+    e.preventDefault();
+    const name = $m('#nName').value.trim(), code = $m('#nCode').value, role = $m('#nRole').value;
+    if (!name) return;
+    if (code.length < 4) return msg('รหัสต้องมีอย่างน้อย 4 ตัว', true);
+    const h = sha256hex(code);
+    if (users.some(u => u.hash === h)) return msg('รหัสนี้มีคนใช้แล้ว ตั้งรหัสอื่น', true);
+    users.push({ name, role, hash: h }); saveLocal();
+    $m('#nName').value = ''; $m('#nCode').value = ''; $m('#nRole').value = 'user';
+    msg(`เพิ่ม ${name} (สิทธิ์${ROLE_TH[role]}) แล้ว`);
+  });
+  $m('#copyJson').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(usersJson()); msg('คัดลอก users.json แล้ว — นำไปวางแทนเนื้อหาไฟล์ users.json บน GitHub'); }
+    catch { msg('คัดลอกไม่ได้ ลองกดดาวน์โหลดแทน', true); }
+  });
+  $m('#dlJson').addEventListener('click', () => {
+    try {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([usersJson()], { type: 'application/json' }));
+      a.download = 'users.json'; document.body.appendChild(a); a.click(); a.remove();
+      msg('ดาวน์โหลดแล้ว — อัปโหลดทับ users.json ในรีโป GitHub');
+    } catch { msg('ดาวน์โหลดไม่ได้ในหน้านี้ ใช้ปุ่มคัดลอกแทน', true); }
+  });
+  $m('#resetLocal').addEventListener('click', () => {
+    sset(localStorage, LOCAL_USERS, null); hasLocal = false; users = clone(baseUsers);
+    if (me && !findByHash(me.hash)){ logout(); return; }
+    renderPerm(); msg('กลับไปใช้รายชื่อจาก users.json แล้ว');
+  });
+
+  (async () => {
+    await loadUsers();
+    const h = sget(localStorage, AUTH_KEY) || sget(sessionStorage, AUTH_KEY);
+    const u = h && findByHash(h);
+    u ? unlock(u) : lock();
+  })();
+
 })();
 </script>
 </body>

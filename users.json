@@ -1,0 +1,54 @@
+{
+  "users": [
+    {
+      "name": "seattee1",
+      "role": "admin",
+      "hash": "ca70cbffb842c88dc4c9bf2fb3be7bc19138f4087c2d5908c1df9500ee0c782a"
+    },
+    {
+      "name": "seattee2",
+      "role": "user",
+      "hash": "b36b2218c3ee421449096baab9f7275ca82690fe9cd58a6e20cd186bbdd2347e"
+    },
+    {
+      "name": "seattee3",
+      "role": "user",
+      "hash": "56c2412a5d3051197df969d89ba7c72f1f5ddd3cbc4ecfb27d9253dc63bf0e37"
+    },
+    {
+      "name": "seattee4",
+      "role": "user",
+      "hash": "ba90f123b8b5b9b55fa17b3458cf1d18ebccaefd07376c9c185d19fc6cf346e7"
+    },
+    {
+      "name": "seattee5",
+      "role": "user",
+      "hash": "c8e6dd618c7ae3553441df639b653ea3f31be1fac1e9c6fe90e8f17d0e551459"
+    },
+    {
+      "name": "seattee6",
+      "role": "user",
+      "hash": "f4ff8fccbd0309b51e4942385d653bf1cea8e09bf763142ae454ac23bfcd5054"
+    },
+    {
+      "name": "seattee7",
+      "role": "user",
+      "hash": "e287b07965c96ffabb40dbb3193543a95781a8b6407e069aa1a515deb1e39df0"
+    },
+    {
+      "name": "seattee8",
+      "role": "user",
+      "hash": "2778cd4dd302c72207a1053e40b9426958546a34974df5f94e9d3a8dc860a1e6"
+    },
+    {
+      "name": "seattee9",
+      "role": "user",
+      "hash": "82f633d99ee267953234b413d86620fbf6664dc7b3137f711498771e6826a905"
+    },
+    {
+      "name": "seattee10",
+      "role": "user",
+      "hash": "874680b18e036732ea1ec42b405bd24fc30fae45d5e5b1fff50f5ac2a5455b03"
+    }
+  ]
+}
