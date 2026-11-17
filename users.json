@@ -49,6 +49,11 @@
       "name": "seattee10",
       "role": "user",
       "hash": "874680b18e036732ea1ec42b405bd24fc30fae45d5e5b1fff50f5ac2a5455b03"
+    },
+    {
+      "name": "seattee8888",
+      "role": "admin",
+      "hash": "7713dda0d5f6f3183044c9d5aa88f20f9919110503e97eeefbd2c06fbb80626d"
     }
   ]
 }
