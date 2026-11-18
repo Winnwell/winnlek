@@ -163,7 +163,7 @@
   /* ---------- login ---------- */
   .login{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:20px;background:var(--bg);overflow:auto}
   body.locked .wrap{display:none}
-  .lg-shell{display:grid;grid-template-columns:1fr 1fr;width:100%;max-width:540px;min-height:300px;background:var(--card);border-radius:22px;overflow:hidden;box-shadow:var(--soft)}
+  .lg-shell{display:grid;grid-template-columns:minmax(0,45fr) minmax(0,55fr);width:100%;max-width:580px;min-height:300px;background:var(--card);border-radius:22px;overflow:hidden;box-shadow:var(--soft)}
   .lg-side{position:relative;overflow:hidden;background:var(--grad);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 14px;text-align:center}
   .lg-side::before{content:"";position:absolute;width:200px;height:200px;right:-90px;top:-95px;border-radius:50%;background:var(--blob)}
   .lg-side::after{content:"";position:absolute;width:150px;height:150px;left:-65px;bottom:-80px;border-radius:50%;background:rgba(255,255,255,.16)}
