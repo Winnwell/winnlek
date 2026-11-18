@@ -2,7 +2,7 @@
   "users": [
     {
       "name": "seattee1",
-      "role": "admin",
+      "role": "user",
       "hash": "ca70cbffb842c88dc4c9bf2fb3be7bc19138f4087c2d5908c1df9500ee0c782a"
     },
     {
@@ -54,6 +54,11 @@
       "name": "seattee8888",
       "role": "admin",
       "hash": "7713dda0d5f6f3183044c9d5aa88f20f9919110503e97eeefbd2c06fbb80626d"
+    },
+    {
+      "name": "seattee168",
+      "role": "user",
+      "hash": "dbc428eec289c44f09691ba88332bf61582c53e5a50986d678c1df041e9c437f"
     }
   ]
 }
